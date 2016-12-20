@@ -17,19 +17,20 @@ class NeuralNetwork():
         return x * (1 - x)
 
     def think(self, inputs):
+        # activation function
         return self.__sigmoid(dot(inputs, self.synaptic_weights))
 
     def train(self, training_set_inputs, training_set_outputs, iterations):
-        for i in xrange(iterations):
+        for _ in xrange(iterations):
             output = self.think(training_set_inputs)
 
-            # absolute error
+            # loss function
             error = training_set_outputs - output
 
             # product of inputs with absolute error, gradiant descent
             adjustment = dot(training_set_inputs.T, error * self.__sigmoid_derivative(output))
 
-            # adjust
+            # backpropagation
             self.synaptic_weights += adjustment
 
 if __name__ == "__main__":
@@ -38,8 +39,14 @@ if __name__ == "__main__":
     print "Random starting synaptic weights: "
     print neural_network.synaptic_weights
 
+    # Training the NN for A
     training_set_inputs = array([[0, 0, 1], [1, 1, 1], [1, 0, 1], [0, 1, 1]])
     training_set_outputs = array([[0, 1, 1, 0]]).T
+
+    # Training the NN for A && B
+    # training_set_inputs = array([[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,1,1]])
+    # training_set_outputs = array([[0,0,0,1,1]]).T
+
 
     neural_network.train(training_set_inputs, training_set_outputs, 10000)
 
